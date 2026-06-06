@@ -51,6 +51,7 @@ local ScreenGui = Instance.new('ScreenGui')
 ScreenGui.Name = 'HelaHub'
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.ResetOnSpawn = false
+ScreenGui.DisplayOrder = 99999
 ScreenGui.IgnoreGuiInset = true
 
 if isStudio then
