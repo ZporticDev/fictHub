@@ -3,8 +3,8 @@
   /" |  | "\  /"     "||"  |          /""\          /" |  | "\ ("  _||_ " ||   _  "\  
  (:  (__)  :)(: ______)||  |         /    \        (:  (__)  :)|   (  ) : |(. |_)  :) 
   \/      \/  \/    |  |:  |        /' /\  \        \/      \/ (:  |  | . )|:     \/  
-  //  __  \\  // ___)_  \  |___    //  __'  \       //  __  \\  \\ \__/ // (|  _  \\  
- (:  (  )  :)(:      "|( \_|:  \  /   /  \\  \     (:  (  )  :) /\\ __ //\ |: |_)  :) 
+  //  __  \  // ___)_  \  |___    //  __'  \       //  __  \  \ \__/ // (|  _  \  
+ (:  (  )  :)(:      "|( \_|:  \  /   /  \  \     (:  (  )  :) /\ __ //\ |: |_)  :) 
   \__|  |__/  \_______) \_______)(___/    \___)     \__|  |__/ (__________)(_______/  
 ]]
 
@@ -41,6 +41,7 @@ local Theme = {
 
 local FONT  = Font.new('rbxassetid://11702779517', Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 local FONT_SEMIBOLD = Font.new('rbxassetid://11702779517', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+local FONT_BOLD = Font.new('rbxassetid://11702779517', Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 local TWEEN = TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 local ROW_H = 51
 local WIDTH = 284
@@ -51,8 +52,8 @@ local ScreenGui = Instance.new('ScreenGui')
 ScreenGui.Name = 'HelaHub'
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.ResetOnSpawn = false
-ScreenGui.DisplayOrder = 99999
 ScreenGui.IgnoreGuiInset = true
+ScreenGui.DisplayOrder = 99999
 
 if isStudio then
 	ScreenGui.Parent = LocalPlayer:WaitForChild('PlayerGui')
@@ -85,7 +86,7 @@ bg.Parent = ScreenGui
 local toast = Instance.new('Frame')
 toast.Name = 'Toast'
 toast.AnchorPoint = Vector2.new(0.5, 1)
-toast.Position = UDim2.new(0.5, 0, 1, -30)
+toast.Position = UDim2.new(0.5, 0, 1, -60)
 toast.Size = UDim2.new(0, 0, 0, 36)
 toast.AutomaticSize = Enum.AutomaticSize.X
 toast.BackgroundColor3 = Theme.ToastBg
@@ -154,11 +155,11 @@ end
 -- Show toast on startup
 task.delay(0.5, showToast)
 
--- // Watermark (Top Bar Design - No Icon/Logo)
+-- // Watermark (Top Bar Design - HelaHub + FPS)
 local watermark = Instance.new('Frame')
 watermark.Name = 'Watermark'
 watermark.AnchorPoint = Vector2.new(0.5, 0)
-watermark.Position = UDim2.new(0.5, 0, 0, 12)
+watermark.Position = UDim2.new(0.5, 0, 0, 15)
 watermark.Size = UDim2.new(0, 0, 0, 38)
 watermark.AutomaticSize = Enum.AutomaticSize.X
 watermark.BackgroundColor3 = Theme.WatermarkBg
@@ -176,18 +177,38 @@ watermarkStroke.Thickness = 1
 watermarkStroke.Transparency = 0.3
 watermarkStroke.Parent = watermark
 
--- Left section (padding only, no icon)
+-- Left section - HelaHub text
 local leftSection = Instance.new('Frame')
 leftSection.Name = 'LeftSection'
-leftSection.Size = UDim2.new(0, 16, 1, 0)
+leftSection.Size = UDim2.new(0, 0, 1, 0)
+leftSection.AutomaticSize = Enum.AutomaticSize.X
 leftSection.BackgroundTransparency = 1
 leftSection.BorderSizePixel = 0
 leftSection.Parent = watermark
 
+local leftPadding = Instance.new('UIPadding')
+leftPadding.PaddingLeft = UDim.new(0, 14)
+leftPadding.PaddingRight = UDim.new(0, 10)
+leftPadding.Parent = leftSection
+
+local hubText = Instance.new('TextLabel')
+hubText.Name = 'HubText'
+hubText.Size = UDim2.new(0, 0, 1, 0)
+hubText.AutomaticSize = Enum.AutomaticSize.X
+hubText.BackgroundTransparency = 1
+hubText.BorderSizePixel = 0
+hubText.Text = 'HelaHub'
+hubText.TextColor3 = Theme.Text
+hubText.TextSize = 15
+hubText.FontFace = FONT_BOLD
+hubText.TextXAlignment = Enum.TextXAlignment.Left
+hubText.TextYAlignment = Enum.TextYAlignment.Center
+hubText.Parent = leftSection
+
 -- Divider 1
 local div1 = Instance.new('Frame')
 div1.Name = 'Divider1'
-div1.Position = UDim2.new(0, 16, 0.15, 0)
+div1.Position = UDim2.new(1, 0, 0.15, 0)
 div1.Size = UDim2.new(0, 1, 0.7, 0)
 div1.BackgroundColor3 = Theme.WatermarkStroke
 div1.BackgroundTransparency = 0.5
@@ -195,12 +216,12 @@ div1.BorderSizePixel = 0
 local div1Corner = Instance.new('UICorner')
 div1Corner.CornerRadius = UDim.new(1, 0)
 div1Corner.Parent = div1
-div1.Parent = watermark
+div1.Parent = leftSection
 
--- Middle section - Text
+-- Middle section - FPS
 local middleSection = Instance.new('Frame')
 middleSection.Name = 'MiddleSection'
-middleSection.Position = UDim2.new(0, 25, 0, 0)
+middleSection.Position = UDim2.new(1, 0, 0, 0)
 middleSection.Size = UDim2.new(0, 0, 1, 0)
 middleSection.AutomaticSize = Enum.AutomaticSize.X
 middleSection.BackgroundTransparency = 1
@@ -208,23 +229,23 @@ middleSection.BorderSizePixel = 0
 middleSection.Parent = watermark
 
 local middlePadding = Instance.new('UIPadding')
-middlePadding.PaddingLeft = UDim.new(0, 8)
-middlePadding.PaddingRight = UDim.new(0, 8)
+middlePadding.PaddingLeft = UDim.new(0, 10)
+middlePadding.PaddingRight = UDim.new(0, 10)
 middlePadding.Parent = middleSection
 
-local watermarkText = Instance.new('TextLabel')
-watermarkText.Name = 'WatermarkText'
-watermarkText.Size = UDim2.new(0, 0, 1, 0)
-watermarkText.AutomaticSize = Enum.AutomaticSize.X
-watermarkText.BackgroundTransparency = 1
-watermarkText.BorderSizePixel = 0
-watermarkText.Text = 't.me/jbdsgn'
-watermarkText.TextColor3 = Theme.Text
-watermarkText.TextSize = 15
-watermarkText.FontFace = FONT_SEMIBOLD
-watermarkText.TextXAlignment = Enum.TextXAlignment.Left
-watermarkText.TextYAlignment = Enum.TextYAlignment.Center
-watermarkText.Parent = middleSection
+local fpsText = Instance.new('TextLabel')
+fpsText.Name = 'FPSText'
+fpsText.Size = UDim2.new(0, 0, 1, 0)
+fpsText.AutomaticSize = Enum.AutomaticSize.X
+fpsText.BackgroundTransparency = 1
+fpsText.BorderSizePixel = 0
+fpsText.Text = '60 FPS'
+fpsText.TextColor3 = Theme.Accent
+fpsText.TextSize = 15
+fpsText.FontFace = FONT_SEMIBOLD
+fpsText.TextXAlignment = Enum.TextXAlignment.Left
+fpsText.TextYAlignment = Enum.TextYAlignment.Center
+fpsText.Parent = middleSection
 
 -- Divider 2
 local div2 = Instance.new('Frame')
@@ -271,6 +292,7 @@ timeText.Parent = rightSection
 -- // Time & FPS Update
 local lastTime = tick()
 local frameCount = 0
+local fps = 60
 
 local function updateWatermark()
 	while watermark and watermark.Parent do
@@ -292,6 +314,30 @@ local function updateWatermark()
 	end
 end
 
+local function updateFPS()
+	RunService.RenderStepped:Connect(function()
+		frameCount += 1
+		local currentTime = tick()
+		if currentTime - lastTime >= 1 then
+			fps = frameCount
+			frameCount = 0
+			lastTime = currentTime
+			fpsText.Text = tostring(fps) .. ' FPS'
+
+			if fps >= 55 then
+				fpsText.TextColor3 = Theme.Accent
+			elseif fps >= 30 then
+				fpsText.TextColor3 = Color3.fromRGB(255, 200, 0)
+			else
+				fpsText.TextColor3 = Color3.fromRGB(255, 80, 80)
+			end
+		end
+	end)
+end
+
+task.spawn(updateWatermark)
+updateFPS()
+
 local Container = Instance.new('Frame')
 Container.Name = 'Container'
 Container.Size = UDim2.new(1, 0, 1, 0)
@@ -307,7 +353,7 @@ ContainerLayout.VerticalAlignment = Enum.VerticalAlignment.Top
 ContainerLayout.Parent = Container
 
 local ContainerPadding = Instance.new('UIPadding')
-ContainerPadding.PaddingTop = UDim.new(0, 25)
+ContainerPadding.PaddingTop = UDim.new(0, 80)
 ContainerPadding.PaddingLeft = UDim.new(0, 25)
 ContainerPadding.Parent = Container
 
