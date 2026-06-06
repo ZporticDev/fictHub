@@ -488,6 +488,80 @@ function Library:CreatePanel(config)
 	local rowCount = 0
 	local Panel = {}
 
+	function Panel:AddTitle(config)
+		local text = config.Text or 'Title'
+
+		rowCount += 1
+		local isAlt = rowCount % 2 == 0
+
+		local row = makeRow(content, 'Title_' .. rowCount, rowCount, isAlt)
+		row.Size = UDim2.new(1, 0, 0, 36)
+
+		local titleLabel = Instance.new('TextLabel')
+		titleLabel.Size = UDim2.new(1, 0, 1, 0)
+		titleLabel.BackgroundTransparency = 1
+		titleLabel.BorderSizePixel = 0
+		titleLabel.Text = text
+		titleLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+		titleLabel.TextSize = 12
+		titleLabel.FontFace = FONT
+		titleLabel.TextXAlignment = Enum.TextXAlignment.Center
+		titleLabel.TextYAlignment = Enum.TextYAlignment.Center
+		titleLabel.Parent = row
+
+		return row
+	end
+
+	function Panel:AddButton(config)
+		local name     = config.Name or 'Button'
+		local callback = config.Callback or function() end
+
+		rowCount += 1
+		local isAlt = rowCount % 2 == 0
+
+		local row = makeRow(content, name, rowCount, isAlt)
+
+		local btn = Instance.new('TextButton')
+		btn.Name = 'Button'
+		btn.Size = UDim2.new(1, 0, 1, 0)
+		btn.BackgroundColor3 = Theme.RowAlt
+		btn.BackgroundTransparency = 0.3
+		btn.BorderSizePixel = 0
+		btn.Text = name
+		btn.TextColor3 = Theme.Text
+		btn.TextSize = 14
+		btn.FontFace = FONT
+		btn.Parent = row
+
+		local btnCorner = Instance.new('UICorner')
+		btnCorner.CornerRadius = UDim.new(0, 6)
+		btnCorner.Parent = btn
+
+		btn.MouseEnter:Connect(function()
+			TweenService:Create(btn, TweenInfo.new(0.15), {BackgroundTransparency = 0.1}):Play()
+		end)
+
+		btn.MouseLeave:Connect(function()
+			TweenService:Create(btn, TweenInfo.new(0.15), {BackgroundTransparency = 0.3}):Play()
+		end)
+
+		btn.MouseButton1Click:Connect(function()
+			TweenService:Create(btn, TweenInfo.new(0.1), {BackgroundTransparency = 0}):Play()
+			task.delay(0.1, function()
+				TweenService:Create(btn, TweenInfo.new(0.15), {BackgroundTransparency = 0.3}):Play()
+			end)
+			callback()
+		end)
+
+		local button = {}
+
+		function button:SetText(newText)
+			btn.Text = newText
+		end
+
+		return button
+	end
+
 	function Panel:AddToggle(config)
 		local name     = config.Name or 'Toggle'
 		local default  = config.Default or false
