@@ -218,49 +218,7 @@ div1Corner.CornerRadius = UDim.new(1, 0)
 div1Corner.Parent = div1
 div1.Parent = leftSection
 
--- Middle section - FPS
-local middleSection = Instance.new('Frame')
-middleSection.Name = 'MiddleSection'
-middleSection.Position = UDim2.new(1, 0, 0, 0)
-middleSection.Size = UDim2.new(0, 0, 1, 0)
-middleSection.AutomaticSize = Enum.AutomaticSize.X
-middleSection.BackgroundTransparency = 1
-middleSection.BorderSizePixel = 0
-middleSection.Parent = watermark
-
-local middlePadding = Instance.new('UIPadding')
-middlePadding.PaddingLeft = UDim.new(0, 10)
-middlePadding.PaddingRight = UDim.new(0, 10)
-middlePadding.Parent = middleSection
-
-local fpsText = Instance.new('TextLabel')
-fpsText.Name = 'FPSText'
-fpsText.Size = UDim2.new(0, 0, 1, 0)
-fpsText.AutomaticSize = Enum.AutomaticSize.X
-fpsText.BackgroundTransparency = 1
-fpsText.BorderSizePixel = 0
-fpsText.Text = '60 FPS'
-fpsText.TextColor3 = Theme.Accent
-fpsText.TextSize = 15
-fpsText.FontFace = FONT_SEMIBOLD
-fpsText.TextXAlignment = Enum.TextXAlignment.Left
-fpsText.TextYAlignment = Enum.TextYAlignment.Center
-fpsText.Parent = middleSection
-
--- Divider 2
-local div2 = Instance.new('Frame')
-div2.Name = 'Divider2'
-div2.Position = UDim2.new(1, -1, 0.15, 0)
-div2.Size = UDim2.new(0, 1, 0.7, 0)
-div2.BackgroundColor3 = Theme.WatermarkStroke
-div2.BackgroundTransparency = 0.5
-div2.BorderSizePixel = 0
-local div2Corner = Instance.new('UICorner')
-div2Corner.CornerRadius = UDim.new(1, 0)
-div2Corner.Parent = div2
-div2.Parent = watermark
-
--- Right section - Time
+-- Right section - FPS
 local rightSection = Instance.new('Frame')
 rightSection.Name = 'RightSection'
 rightSection.Position = UDim2.new(1, 0, 0, 0)
@@ -275,44 +233,24 @@ rightPadding.PaddingLeft = UDim.new(0, 10)
 rightPadding.PaddingRight = UDim.new(0, 14)
 rightPadding.Parent = rightSection
 
-local timeText = Instance.new('TextLabel')
-timeText.Name = 'TimeText'
-timeText.Size = UDim2.new(0, 0, 1, 0)
-timeText.AutomaticSize = Enum.AutomaticSize.X
-timeText.BackgroundTransparency = 1
-timeText.BorderSizePixel = 0
-timeText.Text = '00:00:00'
-timeText.TextColor3 = Theme.Text
-timeText.TextSize = 15
-timeText.FontFace = FONT_SEMIBOLD
-timeText.TextXAlignment = Enum.TextXAlignment.Left
-timeText.TextYAlignment = Enum.TextYAlignment.Center
-timeText.Parent = rightSection
+local fpsText = Instance.new('TextLabel')
+fpsText.Name = 'FPSText'
+fpsText.Size = UDim2.new(0, 0, 1, 0)
+fpsText.AutomaticSize = Enum.AutomaticSize.X
+fpsText.BackgroundTransparency = 1
+fpsText.BorderSizePixel = 0
+fpsText.Text = '60 FPS'
+fpsText.TextColor3 = Theme.Accent
+fpsText.TextSize = 15
+fpsText.FontFace = FONT_SEMIBOLD
+fpsText.TextXAlignment = Enum.TextXAlignment.Left
+fpsText.TextYAlignment = Enum.TextYAlignment.Center
+fpsText.Parent = rightSection
 
--- // Time & FPS Update
+-- // FPS Update
 local lastTime = tick()
 local frameCount = 0
 local fps = 60
-
-local function updateWatermark()
-	while watermark and watermark.Parent do
-		local now = DateTime.now()
-		local hour = tonumber(now:FormatLocalTime('HH', 'en-us'))
-		local min = now:FormatLocalTime('mm', 'en-us')
-		local sec = now:FormatLocalTime('ss', 'en-us')
-
-		local locale = os.date('%p')
-		if locale and locale ~= '' then
-			local h12 = now:FormatLocalTime('h', 'en-us')
-			local ampm = now:FormatLocalTime('tt', 'en-us')
-			timeText.Text = h12 .. ':' .. min .. ':' .. sec .. ' ' .. ampm
-		else
-			timeText.Text = hour .. ':' .. min .. ':' .. sec
-		end
-
-		task.wait(1)
-	end
-end
 
 local function updateFPS()
 	RunService.RenderStepped:Connect(function()
@@ -335,7 +273,6 @@ local function updateFPS()
 	end)
 end
 
-task.spawn(updateWatermark)
 updateFPS()
 
 local Container = Instance.new('Frame')
