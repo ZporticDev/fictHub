@@ -41,7 +41,6 @@ local Theme = {
 
 local FONT  = Font.new('rbxassetid://11702779517', Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 local FONT_SEMIBOLD = Font.new('rbxassetid://11702779517', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-local FONT_BOLD = Font.new('rbxassetid://11702779517', Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 local TWEEN = TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 local ROW_H = 51
 local WIDTH = 284
@@ -177,7 +176,7 @@ watermarkStroke.Thickness = 1
 watermarkStroke.Transparency = 0.3
 watermarkStroke.Parent = watermark
 
--- Left section - HelaHub text
+-- Left section - HelaHub text (FONT - Medium)
 local leftSection = Instance.new('Frame')
 leftSection.Name = 'LeftSection'
 leftSection.Size = UDim2.new(0, 0, 1, 0)
@@ -200,7 +199,7 @@ hubText.BorderSizePixel = 0
 hubText.Text = 'HelaHub'
 hubText.TextColor3 = Theme.Text
 hubText.TextSize = 15
-hubText.FontFace = FONT_BOLD
+hubText.FontFace = FONT
 hubText.TextXAlignment = Enum.TextXAlignment.Left
 hubText.TextYAlignment = Enum.TextYAlignment.Center
 hubText.Parent = leftSection
@@ -635,11 +634,15 @@ function Library:CreatePanel(config)
 			value = math.round(min + (max - min) * relative)
 			local pct = (value - min) / (max - min)
 
+			-- Clamp handle position so it stays inside track
+			local handlePct = math.clamp(pct, 0, 1)
+			local fillPct = math.clamp(pct, 0, 1)
+
 			TweenService:Create(fill, TWEEN, {
-				Size = UDim2.new(pct, 0, 1, 0)
+				Size = UDim2.new(fillPct, 0, 1, 0)
 			}):Play()
 			TweenService:Create(handle, TWEEN, {
-				Position = UDim2.new(pct, 0, 0.5, 0)
+				Position = UDim2.new(handlePct, 0, 0.5, 0)
 			}):Play()
 
 			valueLabel.Text = tostring(value)
@@ -674,11 +677,13 @@ function Library:CreatePanel(config)
 		function slider:SetValue(val)
 			value = math.clamp(val, min, max)
 			local pct = (value - min) / (max - min)
+			local handlePct = math.clamp(pct, 0, 1)
+			local fillPct = math.clamp(pct, 0, 1)
 			TweenService:Create(fill, TWEEN, {
-				Size = UDim2.new(pct, 0, 1, 0)
+				Size = UDim2.new(fillPct, 0, 1, 0)
 			}):Play()
 			TweenService:Create(handle, TWEEN, {
-				Position = UDim2.new(pct, 0, 0.5, 0)
+				Position = UDim2.new(handlePct, 0, 0.5, 0)
 			}):Play()
 			valueLabel.Text = tostring(value)
 			callback(value)
